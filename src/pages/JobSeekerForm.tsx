@@ -48,36 +48,37 @@ const JobSeekerForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-4 sm:p-6">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <Link to="/">
-            <Button variant="ghost" size="sm" className="gap-2">
+            <Button variant="ghost" size="sm" className="gap-2 text-sm">
               <ArrowLeft className="h-4 w-4" />
-              Back to Home
+              <span className="hidden xs:inline">Back to Home</span>
+              <span className="xs:hidden">Back</span>
             </Button>
           </Link>
           <img 
             src="/lovable-uploads/9aa767a6-cd22-4e17-9820-f078bcaa81a0.png" 
             alt="Grace Logo" 
-            className="h-12 w-auto"
+            className="h-10 sm:h-12 w-auto"
           />
         </div>
 
         <Card className="bg-gradient-card border-primary/20 animate-fade-in">
-          <CardHeader>
-            <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="text-xl sm:text-2xl bg-gradient-primary bg-clip-text text-transparent">
               Job Seeker Application
             </CardTitle>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Tell us about yourself and your career aspirations
             </p>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <CardContent className="px-4 sm:px-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               {/* Personal Information */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="fullName">Full Name *</Label>
                   <Input
@@ -101,7 +102,7 @@ const JobSeekerForm = () => {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone Number *</Label>
                   <Input
@@ -168,7 +169,7 @@ const JobSeekerForm = () => {
                 />
               </div>
 
-              <Button type="submit" variant="gradient" size="lg" className="w-full gap-2">
+              <Button type="submit" variant="gradient" size="lg" className="w-full gap-2 text-sm sm:text-base py-3 sm:py-4">
                 <Send className="h-4 w-4" />
                 Submit Application
               </Button>
