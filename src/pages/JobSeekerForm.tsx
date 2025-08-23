@@ -8,9 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useI18n } from "@/i18n/I18nProvider";
 
 const JobSeekerForm = () => {
   const { toast } = useToast();
+  const { t } = useI18n();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -18,7 +20,8 @@ const JobSeekerForm = () => {
     category: "",
     experience: "",
     skills: "",
-    message: ""
+    message: "",
+    cvFile: null as File | null,
   });
 
   const jobCategories = [
@@ -35,15 +38,15 @@ const JobSeekerForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would integrate with your backend/email service
+    // In a real app, send FormData with the file to backend
     console.log("Job seeker form data:", formData);
     toast({
-      title: "Application Submitted!",
-      description: "We'll review your application and get back to you soon.",
+      title: t("seeker.toast.title"),
+      description: t("seeker.toast.desc"),
     });
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | File | null) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -55,24 +58,19 @@ const JobSeekerForm = () => {
           <Link to="/">
             <Button variant="ghost" size="sm" className="gap-2 text-sm">
               <ArrowLeft className="h-4 w-4" />
-              <span className="hidden xs:inline">Back to Home</span>
-              <span className="xs:hidden">Back</span>
+              <span className="hidden xs:inline">{t("common.back")}</span>
+              <span className="xs:hidden">{t("common.back.short")}</span>
             </Button>
           </Link>
-          <img 
-            src="/lovable-uploads/9aa767a6-cd22-4e17-9820-f078bcaa81a0.png" 
-            alt="Grace Logo" 
-            className="h-10 sm:h-12 w-auto"
-          />
         </div>
 
         <Card className="bg-gradient-card border-primary/20 animate-fade-in">
           <CardHeader className="px-4 sm:px-6">
             <CardTitle className="text-xl sm:text-2xl bg-gradient-primary bg-clip-text text-transparent">
-              Job Seeker Application
+              {t("seeker.title")}
             </CardTitle>
             <p className="text-sm sm:text-base text-muted-foreground">
-              Tell us about yourself and your career aspirations
+              {t("seeker.subtitle")}
             </p>
           </CardHeader>
           <CardContent className="px-4 sm:px-6">
@@ -80,7 +78,7 @@ const JobSeekerForm = () => {
               {/* Personal Information */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name *</Label>
+                  <Label htmlFor="fullName">{t("seeker.fullName")}</Label>
                   <Input
                     id="fullName"
                     value={formData.fullName}
@@ -90,7 +88,7 @@ const JobSeekerForm = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address *</Label>
+                  <Label htmlFor="email">{t("seeker.email")}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -104,18 +102,18 @@ const JobSeekerForm = () => {
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number *</Label>
+                  <Label htmlFor="phone">{t("seeker.phone")}</Label>
                   <Input
                     id="phone"
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     required
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="+91 98765 43210"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="category">Job Category *</Label>
+                  <Label htmlFor="category">{t("seeker.category")}</Label>
                   <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a category" />
@@ -132,7 +130,7 @@ const JobSeekerForm = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="experience">Years of Experience</Label>
+                <Label htmlFor="experience">{t("seeker.experience")}</Label>
                 <Select value={formData.experience} onValueChange={(value) => handleInputChange("experience", value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select your experience level" />
@@ -148,7 +146,7 @@ const JobSeekerForm = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="skills">Key Skills & Qualifications</Label>
+                <Label htmlFor="skills">{t("seeker.skills")}</Label>
                 <Textarea
                   id="skills"
                   value={formData.skills}
@@ -159,7 +157,7 @@ const JobSeekerForm = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="message">Additional Message</Label>
+                <Label htmlFor="message">{t("seeker.message")}</Label>
                 <Textarea
                   id="message"
                   value={formData.message}
@@ -169,9 +167,20 @@ const JobSeekerForm = () => {
                 />
               </div>
 
+              {/* CV Upload */}
+              <div className="space-y-2">
+                <Label htmlFor="cv">{t("seeker.uploadCv")}</Label>
+                <Input
+                  id="cv"
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={(e) => handleInputChange("cvFile", e.target.files?.[0] ?? null)}
+                />
+              </div>
+
               <Button type="submit" variant="gradient" size="lg" className="w-full gap-2 text-sm sm:text-base py-3 sm:py-4">
                 <Send className="h-4 w-4" />
-                Submit Application
+                {t("seeker.submit")}
               </Button>
             </form>
           </CardContent>

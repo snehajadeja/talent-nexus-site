@@ -8,9 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useI18n } from "@/i18n/I18nProvider";
 
 const RecruiterForm = () => {
   const { toast } = useToast();
+  const { t } = useI18n();
   const [formData, setFormData] = useState({
     companyName: "",
     contactName: "",
@@ -22,7 +24,8 @@ const RecruiterForm = () => {
     salaryRange: "",
     jobType: "",
     requirements: "",
-    description: ""
+    description: "",
+    quantity: "",
   });
 
   const jobCategories = [
@@ -48,11 +51,10 @@ const RecruiterForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would integrate with your backend/email service
     console.log("Recruiter form data:", formData);
     toast({
-      title: "Job Posted Successfully!",
-      description: "Your job posting has been submitted for review.",
+      title: t("recruiter.toast.title"),
+      description: t("recruiter.toast.desc"),
     });
   };
 
@@ -68,23 +70,18 @@ const RecruiterForm = () => {
           <Link to="/">
             <Button variant="ghost" size="sm" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
-              Back to Home
+              {t("common.back")}
             </Button>
           </Link>
-          <img 
-            src="/lovable-uploads/9aa767a6-cd22-4e17-9820-f078bcaa81a0.png" 
-            alt="Grace Logo" 
-            className="h-12 w-auto"
-          />
         </div>
 
         <Card className="bg-gradient-card border-primary/20 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
-              Post a Job Opening
+              {t("recruiter.title")}
             </CardTitle>
             <p className="text-muted-foreground">
-              Find the perfect candidates for your organization
+              {t("recruiter.subtitle")}
             </p>
           </CardHeader>
           <CardContent>
@@ -92,7 +89,7 @@ const RecruiterForm = () => {
               {/* Company Information */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="companyName">Company Name *</Label>
+                  <Label htmlFor="companyName">{t("recruiter.companyName")}</Label>
                   <Input
                     id="companyName"
                     value={formData.companyName}
@@ -102,7 +99,7 @@ const RecruiterForm = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="contactName">Contact Person *</Label>
+                  <Label htmlFor="contactName">{t("recruiter.contactName")}</Label>
                   <Input
                     id="contactName"
                     value={formData.contactName}
@@ -115,7 +112,7 @@ const RecruiterForm = () => {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address *</Label>
+                  <Label htmlFor="email">{t("recruiter.email")}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -126,14 +123,14 @@ const RecruiterForm = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number *</Label>
+                  <Label htmlFor="phone">{t("recruiter.phone")}</Label>
                   <Input
                     id="phone"
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     required
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="+91 98765 43210"
                   />
                 </div>
               </div>
@@ -141,7 +138,7 @@ const RecruiterForm = () => {
               {/* Job Details */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="jobTitle">Job Title *</Label>
+                  <Label htmlFor="jobTitle">{t("recruiter.jobTitle")}</Label>
                   <Input
                     id="jobTitle"
                     value={formData.jobTitle}
@@ -151,7 +148,7 @@ const RecruiterForm = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="category">Job Category *</Label>
+                  <Label htmlFor="category">{t("recruiter.category")}</Label>
                   <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a category" />
@@ -169,7 +166,7 @@ const RecruiterForm = () => {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="location">Location *</Label>
+                  <Label htmlFor="location">{t("recruiter.location")}</Label>
                   <Input
                     id="location"
                     value={formData.location}
@@ -179,7 +176,7 @@ const RecruiterForm = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="jobType">Job Type *</Label>
+                  <Label htmlFor="jobType">{t("recruiter.jobType")}</Label>
                   <Select value={formData.jobType} onValueChange={(value) => handleInputChange("jobType", value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select job type" />
@@ -195,18 +192,31 @@ const RecruiterForm = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="salaryRange">Salary Range</Label>
-                <Input
-                  id="salaryRange"
-                  value={formData.salaryRange}
-                  onChange={(e) => handleInputChange("salaryRange", e.target.value)}
-                  placeholder="e.g. $45,000 - $60,000 annually"
-                />
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="salaryRange">{t("recruiter.salaryRange")}</Label>
+                  <Input
+                    id="salaryRange"
+                    value={formData.salaryRange}
+                    onChange={(e) => handleInputChange("salaryRange", e.target.value)}
+                    placeholder="e.g. ₹35,000 - ₹50,000 per month"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="quantity">{t("recruiter.quantity")}</Label>
+                  <Input
+                    id="quantity"
+                    type="number"
+                    min={1}
+                    value={formData.quantity}
+                    onChange={(e) => handleInputChange("quantity", e.target.value)}
+                    placeholder="e.g. 5"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="requirements">Requirements & Qualifications *</Label>
+                <Label htmlFor="requirements">{t("recruiter.requirements")}</Label>
                 <Textarea
                   id="requirements"
                   value={formData.requirements}
@@ -218,7 +228,7 @@ const RecruiterForm = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Job Description *</Label>
+                <Label htmlFor="description">{t("recruiter.description")}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -231,7 +241,7 @@ const RecruiterForm = () => {
 
               <Button type="submit" variant="gradient" size="lg" className="w-full gap-2">
                 <Send className="h-4 w-4" />
-                Post Job Opening
+                {t("recruiter.submit")}
               </Button>
             </form>
           </CardContent>

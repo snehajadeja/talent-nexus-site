@@ -54,11 +54,11 @@ const Departments = () => {
               Back to Home
             </Button>
           </Link>
-          <img 
+          {/* <img 
             src="/lovable-uploads/9aa767a6-cd22-4e17-9820-f078bcaa81a0.png" 
             alt="Grace Logo" 
             className="h-12 w-auto"
-          />
+          /> */}
         </div>
 
         <div className="text-center mb-12 animate-fade-in">
